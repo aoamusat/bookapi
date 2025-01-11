@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Aspect
 @RestControllerAdvice
 public class RequestLogger {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(RequestLogger.class);
 
     @Around("execution(* io.hexcore.bookapi.controller.*.*(..))")
     public Object logRequest(ProceedingJoinPoint joinPoint) throws Throwable {

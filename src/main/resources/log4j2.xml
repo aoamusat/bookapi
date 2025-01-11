@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration xmlns="https://logging.apache.org/xml/ns"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://logging.apache.org/xml/ns https://logging.apache.org/xml/ns/log4j-config-2.xsd">
+<Configuration status="WARN">
+    <Properties>
+        <Property name="log-path">logs</Property>
+    </Properties>
     <Appenders>
-        <Console name="CONSOLE">
-            <PatternLayout pattern="%p - %m%n" />
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
-        <File name="MAIN" fileName="logs/main.log">
-            <JsonTemplateLayout />
-        </File>
-        <File name="DEBUG_LOG" fileName="logs/debug.log">
-            <PatternLayout pattern="%d [%t] %p %c - %m%n" />
-        </File>
+        <RollingFile name="FileAppender" fileName="${log-path}/app.log"
+            filePattern="${log-path}/app-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+        </RollingFile>
     </Appenders>
     <Loggers>
-        <Root level="ALL">
-            <AppenderRef ref="CONSOLE" level="WARN" />
-            <AppenderRef ref="MAIN" />
+        <Root level="info">
+            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="FileAppender" />
         </Root>
     </Loggers>
 </Configuration>
